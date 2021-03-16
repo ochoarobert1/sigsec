@@ -31,7 +31,7 @@ if (!class_exists('Sigsec_Functions_Class')) :
         public function custom_hide_menu()
         {
             $user = wp_get_current_user();
-            $allowed_roles = array('contributor');
+            $allowed_roles = array('contributor', 'editor');
             if (array_intersect($allowed_roles, $user->roles)) {
                 ob_start();
 ?>
@@ -45,6 +45,10 @@ if (!class_exists('Sigsec_Functions_Class')) :
                     }
 
                     body.wp-admin #adminmenu #menu-tools {
+                        display: none
+                    }
+
+                    body.wp-admin #adminmenu #menu-pages {
                         display: none
                     }
                 </style>

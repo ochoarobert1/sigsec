@@ -24,7 +24,7 @@ if (!class_exists('Sigsec_CPT_Class')) :
             'edit_posts'            => 'edit_posts',
             'edit_others_posts'     => 'edit_others_posts',
             'publish_posts'         => 'publish_posts',
-            'read_private_posts'    => 'read_private_posts',
+            'read_private_posts'    => 'read_private_posts'
         );
 
         /**
@@ -34,6 +34,7 @@ if (!class_exists('Sigsec_CPT_Class')) :
         {
             add_action('init', array($this, 'create_incidencias_custom_post_types'), 0);
             add_action('init', array($this, 'create_vehiculos_custom_post_types'), 0);
+            add_action('init', array($this, 'tipos_incidencia_custom_taxonomy'), 1);
         }
 
         /**
@@ -153,6 +154,46 @@ if (!class_exists('Sigsec_CPT_Class')) :
                 'show_in_rest'          => false,
             );
             register_post_type('vehiculos', $args);
+        }
+
+        /**
+         * Creating tipos vehiculos custom taxonomy
+         */
+        public function tipos_incidencia_custom_taxonomy()
+        {
+            $labels = array(
+                'name'                       => _x('Tipos de Incidencia', 'Taxonomy General Name', parent::PLUGIN_SLUG),
+                'singular_name'              => _x('Tipo de Incidencia', 'Taxonomy Singular Name', parent::PLUGIN_SLUG),
+                'menu_name'                  => __('Tipos de Incidencia', parent::PLUGIN_SLUG),
+                'all_items'                  => __('Todos los Tipos', parent::PLUGIN_SLUG),
+                'parent_item'                => __('Tipo Padre', parent::PLUGIN_SLUG),
+                'parent_item_colon'          => __('Tipo Padre:', parent::PLUGIN_SLUG),
+                'new_item_name'              => __('Nuevo Tipo', parent::PLUGIN_SLUG),
+                'add_new_item'               => __('Agregar Nuevo Tipo', parent::PLUGIN_SLUG),
+                'edit_item'                  => __('Editar Tipo', parent::PLUGIN_SLUG),
+                'update_item'                => __('Actualizar Tipo', parent::PLUGIN_SLUG),
+                'view_item'                  => __('Ver Tipo', parent::PLUGIN_SLUG),
+                'separate_items_with_commas' => __('Separar tipos por comas', parent::PLUGIN_SLUG),
+                'add_or_remove_items'        => __('Agregar o Remover Tipos', parent::PLUGIN_SLUG),
+                'choose_from_most_used'      => __('Escoger de los más usados', parent::PLUGIN_SLUG),
+                'popular_items'              => __('Tipos Populares', parent::PLUGIN_SLUG),
+                'search_items'               => __('Buscar Tipos', parent::PLUGIN_SLUG),
+                'not_found'                  => __('No hay resultados', parent::PLUGIN_SLUG),
+                'no_terms'                   => __('No hay tipos', parent::PLUGIN_SLUG),
+                'items_list'                 => __('Listado de Tipos', parent::PLUGIN_SLUG),
+                'items_list_navigation'      => __('Navegación del Listado de Tipos', parent::PLUGIN_SLUG),
+            );
+            $args = array(
+                'labels'                     => $labels,
+                'hierarchical'               => true,
+                'public'                     => true,
+                'show_ui'                    => true,
+                'show_admin_column'          => true,
+                'show_in_nav_menus'          => true,
+                'show_tagcloud'              => true,
+                'capabilities'               => self::SIGSEC_CAPABILITIES
+            );
+            register_taxonomy('tipos_incidencia', array('incidencias'), $args);
         }
     }
 
