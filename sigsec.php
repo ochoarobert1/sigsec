@@ -4,7 +4,7 @@
 * Plugin URI: http://www.robertochoaweb.com/casos/sigsec?utm_source=plugin&utm_medium=link&utm_content=sigsec
 * Description: Plugin para gestión de seguridad interna en D1.
 * Plugin Date: 15-03-2021
-* Version: 1.0
+* Version: 1.0.0
 * Author: Robert Ochoa
 * Author URI: http://www.robertochoaweb.com/casos/sigsec?utm_source=plugin&utm_medium=link&utm_content=sigsec
 * License: GNU General Public License v2 or later
@@ -51,6 +51,7 @@ if (!class_exists('Sigsec_Main_Class')) :
          */
         public function __construct()
         {
+            /* ADMIN ENQUEUE SCRIPTS / STYLES */
             add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts_styles'), 99);
         }
 
@@ -60,10 +61,12 @@ if (!class_exists('Sigsec_Main_Class')) :
         public function admin_enqueue_scripts_styles()
         {
             wp_enqueue_script(self::PLUGIN_SLUG . '-admin-script', plugins_url('/js/sigsec-admin-script.js', __FILE__), array('jquery'), self::PLUGIN_VERSION, true);
-            wp_enqueue_style(self::PLUGIN_SLUG . '-admin-style', plugin_url('/css/sigsec-admin-style.css', __FILE__), [], self::PLUGIN_VERSION, 'all');
+            wp_enqueue_style(self::PLUGIN_SLUG . '-google-fonts', 'https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600;700;900&display=swap', false, self::PLUGIN_VERSION, 'all');
+            wp_enqueue_style(self::PLUGIN_SLUG . '-admin-style', plugins_url('/css/sigsec-admin-style.css', __FILE__), false, self::PLUGIN_VERSION, 'all');
         }
+
+        
     }
 
     new Sigsec_Main_Class;
-
 endif;
