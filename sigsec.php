@@ -70,3 +70,7 @@ if (!class_exists('Sigsec_Main_Class')) :
 
     new Sigsec_Main_Class;
 endif;
+
+/* GETTING REQUIRED FILES */
+require_once('inc/class-custom-post-type.php');
+require_once('inc/class-custom-functions.php');
