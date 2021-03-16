@@ -23,6 +23,9 @@ if (!class_exists('Sigsec_Functions_Class')) :
         public function __construct()
         {
             add_action('admin_head', array($this, 'custom_hide_menu'), 99);
+            add_filter('manage_edit-tipos_incidencia_columns', array($this, 'add_priority_col'));
+            add_filter('manage_edit-tipos_incidencia_sortable_columns', array($this, 'add_priority_col'));
+            add_filter('manage_tipos_incidencia_custom_column',   array($this, 'manage_priority_col'), 10, 3);
         }
 
         /**
@@ -35,7 +38,7 @@ if (!class_exists('Sigsec_Functions_Class')) :
             if (array_intersect($allowed_roles, $user->roles)) {
                 ob_start();
 ?>
-                <style type="text/css">
+                <style type='text/css'>
                     body.wp-admin #adminmenu #menu-posts {
                         display: none
                     }
@@ -57,7 +60,28 @@ if (!class_exists('Sigsec_Functions_Class')) :
                 echo $content;
             }
         }
+
+        public function add_priority_col($new_columns)
+        {
+            unset($new_columns['posts']);
+            $new_columns['priority'] = 'Prioridad';
+            return $new_columns;
+        }
+        public  function manage_priority_col($value, $name, $id)
+        {
+            $priority = get_term_meta($id, 'sig_priority', true);
+            switch ($name) {
+                case 'priority':
+                    echo 'Prioridad ' . ucfirst($priority);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
+
+
+
 
     new Sigsec_Functions_Class;
 endif;

@@ -74,3 +74,4 @@ endif;
 /* GETTING REQUIRED FILES */
 require_once('inc/class-custom-post-type.php');
 require_once('inc/class-custom-functions.php');
+require_once('inc/class-custom-metaboxes.php');
