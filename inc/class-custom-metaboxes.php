@@ -24,6 +24,58 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
         {
             add_action('cmb2_admin_init', array($this, 'register_custom_metabox_taxonomy'));
             add_action('cmb2_admin_init', array($this, 'register_custom_metabox_incidencias'));
+            add_action('cmb2_admin_init', array($this, 'register_custom_metabox_vehiculos'));
+        }
+
+        /**
+         * CUSTOM METABOXES FOR INCIDENCIAS
+         */
+        public function register_custom_metabox_vehiculos()
+        {
+            $cmb_vehiculos_metabox = new_cmb2_box(array(
+                'id'            => self::PREFIX . 'vechiulos_main_metabox',
+                'title'         => esc_html__('Información Principal', parent::PLUGIN_SLUG),
+                'object_types'  => array('vehiculos'),
+                'context'       => 'normal',
+                'priority'      => 'high',
+                'classes'       => parent::PLUGIN_SLUG . '-cmb2-wrapper',
+                'cmb_styles'    => false
+            ));
+
+            $cmb_vehiculos_metabox->add_field(array(
+                'id'         => self::PREFIX . 'marca',
+                'name'       => esc_html__('Marca', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Escriba la Marca del Vehiculo', parent::PLUGIN_SLUG),
+                'type'    => 'text_medium'
+            ));
+
+            $cmb_vehiculos_metabox->add_field(array(
+                'id'         => self::PREFIX . 'modelo',
+                'name'       => esc_html__('Modelo', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Escriba el Modelo del Vehiculo', parent::PLUGIN_SLUG),
+                'type'    => 'text_medium'
+            ));
+
+            $cmb_vehiculos_metabox->add_field(array(
+                'id'         => self::PREFIX . 'placa',
+                'name'       => esc_html__('Placa', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Escriba la placa del Vehiculo', parent::PLUGIN_SLUG),
+                'type'    => 'text_medium'
+            ));
+
+            $cmb_vehiculos_metabox->add_field(array(
+                'id'         => self::PREFIX . 'color',
+                'name'       => esc_html__('Color', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Escriba el color del Vehiculo', parent::PLUGIN_SLUG),
+                'type'    => 'text_medium'
+            ));
+
+            $cmb_vehiculos_metabox->add_field(array(
+                'id'         => self::PREFIX . 'check_vehiculo_d1',
+                'name'       => esc_html__('¿Este vehiculo es de la Corporación?', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Activar solo si en la vehiculo pertenece a la organizacion', parent::PLUGIN_SLUG),
+                'type'    => 'checkbox'
+            ));
         }
 
         /**
@@ -39,6 +91,14 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
                 'priority'      => 'high',
                 'classes'       => parent::PLUGIN_SLUG . '-cmb2-wrapper',
                 'cmb_styles'    => false
+            ));
+
+            $cmb_incidencias_metabox->add_field(array(
+                'name'       => esc_html__('Fecha de Inicio', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Seleccione la Fecha de Inicio', parent::PLUGIN_SLUG),
+                'id'         => self::PREFIX . 'start_date',
+                'type' => 'text_date',
+                'date_format' => 'd/m/Y'
             ));
 
             $cmb_incidencias_metabox->add_field(array(
@@ -155,6 +215,14 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
                 'name'       => esc_html__('¿Esta incidencia esta cerrada?', parent::PLUGIN_SLUG),
                 'desc'       => esc_html__('Activar solo si esta incidencia esta cerrada / finalizada', parent::PLUGIN_SLUG),
                 'type'    => 'checkbox'
+            ));
+
+            $cmb_incidencias_close_metabox->add_field(array(
+                'name'       => esc_html__('Fecha de Cierre', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Seleccione la Fecha de Cierre', parent::PLUGIN_SLUG),
+                'id'         => self::PREFIX . 'end_date',
+                'type' => 'text_date',
+                'date_format' => 'd/m/Y'
             ));
 
             $cmb_incidencias_close_metabox->add_field(array(
