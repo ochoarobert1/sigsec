@@ -10,13 +10,141 @@ VARIABLES
 @mainfont: 'Titillium Web', sans-serif;
 @black: #000000;
 @white: #ffffff;
+@gray: #3C3C3C;
+@lgray: #525252;
 
 /* --------------------------------------------------------------
 BODY DEFAULTS
 -------------------------------------------------------------- */
+@media only screen and (min-width: 1170px) {
+    #dashboard-widgets .postbox-container {
+        width: 33.33% !important;
+    }
+}
+
 .sigsec-cmb2-wrapper {
     & .cmb-row {
         padding: .5rem 0 !important;
         padding-bottom: 1rem !important;
+    }
+}
+
+.sigsec-cmb2-close-incidencia {
+    & .cmb-th {
+        padding-bottom: 0 !important;
+    }
+
+    & .cmb-row {
+        padding: 0.5rem 0 !important;
+        padding-bottom: .5rem !important;
+        margin-bottom: .5rem;
+    }
+}
+
+.postbox-header {
+    background: @gray;
+    color: @white;
+
+    & h2 {
+        font-family: @mainfont;
+        color: @white;
+    }
+}
+
+#postbox-container-4 {
+    display: none !important;
+}
+
+
+
+/* --------------------------------------------------------------
+ADMIN DASHBOARD
+-------------------------------------------------------------- */
+.welcome-panel-close {
+    display: none;
+}
+
+.welcome-panel {
+    font-family: @mainfont;
+    background: @gray;
+    color: @white;
+    border-radius: 5px;
+    padding: 0;
+
+    & .custom-main-welcome-dashboard {
+        .display(flex);
+        .align-items(flex-start);
+        .justify-content(flex-start);
+        flex-wrap: wrap;
+
+        & .custom-main-welcome-item {
+            flex: 0 0 24%;
+            max-width: 24%;
+            min-height: 145px;
+            box-sizing: border-box;
+            border-right: 2px solid @lgray;
+            padding: 1rem 1rem 2rem 1rem;
+
+            &:last-child {
+                border-right: 0;
+            }
+
+            & h2 {
+                margin: 0;
+                font-size: 1.2rem;
+                font-weight: 200;
+                line-height: 1.5rem;
+                color: white;
+            }
+
+            & .custom-item-value {
+                padding: 1.5rem 0 0 0;
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+
+            & .custom-big-number {
+                font-size: 2.2rem;
+                line-height: 1.8rem;
+            }
+        }
+    }
+}
+
+.table-sigsec {
+    font-family: @mainfont;
+    width: 100%;
+
+    & tr {
+        padding: 0;
+
+        & th {
+            text-align: left;
+            padding: 5px;
+            font-weight: 700;
+            border-top: 1px solid @gray;
+            border-bottom: 1px solid @gray;
+        }
+
+        & td {
+            padding: 15px 5px;
+            border-bottom: 1px solid #e8e8e8;
+
+            & a {
+                cursor: pointer;
+            }
+        }
+
+        & .hidden-table {
+            display: none;
+        }
+    }
+
+    & .badge {
+        font-size: .7rem;
+        color: @white;
+        background: @gray;
+        padding: 4px 10px;
+        border-radius: 50px;
     }
 }

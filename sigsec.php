@@ -63,15 +63,17 @@ if (!class_exists('Sigsec_Main_Class')) :
             wp_enqueue_script(self::PLUGIN_SLUG . '-admin-script', plugins_url('/js/sigsec-admin-script.js', __FILE__), array('jquery'), self::PLUGIN_VERSION, true);
             wp_enqueue_style(self::PLUGIN_SLUG . '-google-fonts', 'https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600;700;900&display=swap', false, self::PLUGIN_VERSION, 'all');
             wp_enqueue_style(self::PLUGIN_SLUG . '-admin-style', plugins_url('/css/sigsec-admin-style.css', __FILE__), false, self::PLUGIN_VERSION, 'all');
+            wp_enqueue_style(self::PLUGIN_SLUG . '-admin-responsive', plugins_url('/css/sigsec-admin-responsive.css', __FILE__), false, self::PLUGIN_VERSION, 'all');
         }
 
         
     }
-
-    new Sigsec_Main_Class;
 endif;
 
+new Sigsec_Main_Class;
+
 /* GETTING REQUIRED FILES */
+require_once('inc/class-admin-dashboard.php');
 require_once('inc/class-custom-post-type.php');
 require_once('inc/class-custom-functions.php');
 require_once('inc/class-custom-metaboxes.php');

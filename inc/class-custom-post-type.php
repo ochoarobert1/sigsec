@@ -16,25 +16,15 @@ if (!class_exists('Sigsec_CPT_Class')) :
 
     class Sigsec_CPT_Class extends Sigsec_Main_Class
     {
-        /* CAPABILITIES CONSTANT */
-        const SIGSEC_CAPABILITIES =  array(
-            'edit_post'             => 'edit_post',
-            'read_post'             => 'read_post',
-            'delete_post'           => 'delete_post',
-            'edit_posts'            => 'edit_posts',
-            'edit_others_posts'     => 'edit_others_posts',
-            'publish_posts'         => 'publish_posts',
-            'read_private_posts'    => 'read_private_posts'
-        );
 
         /**
          * Main Sub-Constructor.
          */
         public function __construct()
         {
-            add_action('init', array($this, 'create_incidencias_custom_post_types'), 0);
-            add_action('init', array($this, 'create_vehiculos_custom_post_types'), 0);
-            add_action('init', array($this, 'tipos_incidencia_custom_taxonomy'), 1);
+            add_action('init', array($this, 'create_incidencias_custom_post_types'));
+            add_action('init', array($this, 'create_vehiculos_custom_post_types'));
+            add_action('init', array($this, 'tipos_incidencia_custom_taxonomy'));
         }
 
         /**
@@ -91,7 +81,7 @@ if (!class_exists('Sigsec_CPT_Class')) :
                 'has_archive'           => true,
                 'exclude_from_search'   => false,
                 'publicly_queryable'    => true,
-                'capabilities'          => self::SIGSEC_CAPABILITIES,
+                'capability_type'       => 'post',
                 'show_in_rest'          => false,
             );
             register_post_type('incidencias', $args);
@@ -103,7 +93,7 @@ if (!class_exists('Sigsec_CPT_Class')) :
         public function create_vehiculos_custom_post_types()
         {
             /* CPT VEHICULOS */
-            $labels = array(
+            $labels2 = array(
                 'name'                  => _x('Vehículos', 'Post Type General Name', parent::PLUGIN_SLUG),
                 'singular_name'         => _x('Vehículo', 'Post Type Singular Name', parent::PLUGIN_SLUG),
                 'menu_name'             => __('Vehículos', parent::PLUGIN_SLUG),
@@ -133,10 +123,10 @@ if (!class_exists('Sigsec_CPT_Class')) :
                 'filter_items_list'     => __('Filtro del Listado de Vehículos', parent::PLUGIN_SLUG),
             );
 
-            $args = array(
+            $args2 = array(
                 'label'                 => __('Vehículos', parent::PLUGIN_SLUG),
                 'description'           => __('Vehículos dentro de la empresa', parent::PLUGIN_SLUG),
-                'labels'                => $labels,
+                'labels'                => $labels2,
                 'supports'              => array('title', 'thumbnail'),
                 'hierarchical'          => false,
                 'public'                => true,
@@ -150,10 +140,10 @@ if (!class_exists('Sigsec_CPT_Class')) :
                 'has_archive'           => true,
                 'exclude_from_search'   => false,
                 'publicly_queryable'    => true,
-                'capabilities'          => self::SIGSEC_CAPABILITIES,
+                'capability_type'       => 'post',
                 'show_in_rest'          => false,
             );
-            register_post_type('vehiculos', $args);
+            register_post_type('vehiculos', $args2);
         }
 
         /**
@@ -161,7 +151,7 @@ if (!class_exists('Sigsec_CPT_Class')) :
          */
         public function tipos_incidencia_custom_taxonomy()
         {
-            $labels = array(
+            $labels3 = array(
                 'name'                       => _x('Tipos de Incidencia', 'Taxonomy General Name', parent::PLUGIN_SLUG),
                 'singular_name'              => _x('Tipo de Incidencia', 'Taxonomy Singular Name', parent::PLUGIN_SLUG),
                 'menu_name'                  => __('Tipos de Incidencia', parent::PLUGIN_SLUG),
@@ -183,19 +173,18 @@ if (!class_exists('Sigsec_CPT_Class')) :
                 'items_list'                 => __('Listado de Tipos', parent::PLUGIN_SLUG),
                 'items_list_navigation'      => __('Navegación del Listado de Tipos', parent::PLUGIN_SLUG),
             );
-            $args = array(
-                'labels'                     => $labels,
+            $args3 = array(
+                'labels'                     => $labels3,
                 'hierarchical'               => true,
                 'public'                     => true,
                 'show_ui'                    => true,
                 'show_admin_column'          => true,
                 'show_in_nav_menus'          => true,
                 'show_tagcloud'              => true,
-                'capabilities'               => self::SIGSEC_CAPABILITIES
             );
-            register_taxonomy('tipos_incidencia', array('incidencias'), $args);
+            register_taxonomy('tipos_incidencia', array('incidencias'), $args3);
         }
     }
-
-    new Sigsec_CPT_Class;
 endif;
+
+new Sigsec_CPT_Class;

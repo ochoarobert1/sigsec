@@ -98,7 +98,7 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
                 'desc'       => esc_html__('Seleccione la Fecha de Inicio', parent::PLUGIN_SLUG),
                 'id'         => self::PREFIX . 'start_date',
                 'type' => 'text_date',
-                'date_format' => 'd/m/Y'
+                'date_format' => 'd-m-Y'
             ));
 
             $cmb_incidencias_metabox->add_field(array(
@@ -123,8 +123,6 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
                 'type'    => 'text_medium'
             ));
 
-            
-
             $cmb_incidencias_metabox->add_field(array(
                 'id'         => self::PREFIX . 'observaciones',
                 'name'       => esc_html__('Observaciones', parent::PLUGIN_SLUG),
@@ -134,7 +132,7 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
                     'wpautop' => true,
                     'media_buttons' => false,
                     'textarea_rows' => get_option('default_post_edit_rows', 3),
-                    'teeny' => true
+                    'teeny' => false
                 ),
             ));
 
@@ -202,12 +200,27 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
 
             $cmb_incidencias_close_metabox = new_cmb2_box(array(
                 'id'            => self::PREFIX . 'incidencias_close_metabox',
-                'title'         => esc_html__('Cierre de Incidencia', parent::PLUGIN_SLUG),
+                'title'         => esc_html__('Estatus de Incidencia', parent::PLUGIN_SLUG),
                 'object_types'  => array('incidencias'),
                 'context'       => 'side',
                 'priority'      => 'high',
                 'classes'       => parent::PLUGIN_SLUG . '-cmb2-wrapper ' . parent::PLUGIN_SLUG . '-cmb2-close-incidencia',
                 'cmb_styles'    => false
+            ));
+
+            $cmb_incidencias_close_metabox->add_field(array(
+                'id'         => self::PREFIX . 'status',
+                'name'       => esc_html__('Estatus Actual', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Seleccionar el estatus actual', parent::PLUGIN_SLUG),
+                'type'             => 'select',
+                'show_option_none' => true,
+                'default'          => 'pendiente',
+                'options'          => array(
+                    'abierta'   => __('Abierta', parent::PLUGIN_SLUG),
+                    'pendiente' => __('Pendiente', parent::PLUGIN_SLUG),
+                    'proceso'     => __('En Proceso', parent::PLUGIN_SLUG),
+                    'cerrado'     => __('Cerrado', parent::PLUGIN_SLUG)
+                )
             ));
 
             $cmb_incidencias_close_metabox->add_field(array(
@@ -222,7 +235,7 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
                 'desc'       => esc_html__('Seleccione la Fecha de Cierre', parent::PLUGIN_SLUG),
                 'id'         => self::PREFIX . 'end_date',
                 'type' => 'text_date',
-                'date_format' => 'd/m/Y'
+                'date_format' => 'd-m-Y'
             ));
 
             $cmb_incidencias_close_metabox->add_field(array(
@@ -270,5 +283,7 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
         }
     }
 
-    new Sigsec_Metaboxes_Class;
+
 endif;
+
+new Sigsec_Metaboxes_Class;

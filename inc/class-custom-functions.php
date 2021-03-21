@@ -26,6 +26,9 @@ if (!class_exists('Sigsec_Functions_Class')) :
             add_filter('manage_edit-tipos_incidencia_columns', array($this, 'add_priority_col'));
             add_filter('manage_edit-tipos_incidencia_sortable_columns', array($this, 'add_priority_col'));
             add_filter('manage_tipos_incidencia_custom_column',   array($this, 'manage_priority_col'), 10, 3);
+
+            add_filter('manage_incidencias_posts_columns', array($this, 'set_custom_edit_incidencias_columns'));
+            add_action('manage_incidencias_posts_custom_column', array($this, 'custom_incidencias_column'), 10, 2);
         }
 
         /**
@@ -55,7 +58,7 @@ if (!class_exists('Sigsec_Functions_Class')) :
                         display: none
                     }
                 </style>
-<?php
+                <?php
                 $content = ob_get_clean();
                 echo $content;
             }
@@ -75,6 +78,45 @@ if (!class_exists('Sigsec_Functions_Class')) :
                     echo 'Prioridad ' . ucfirst($priority);
                     break;
                 default:
+                    break;
+            }
+        }
+
+
+
+        public function set_custom_edit_incidencias_columns($columns)
+        {
+            unset($columns['date']);
+            $columns['sig_check_cierre'] = __('Estatus', parent::PLUGIN_SLUG);
+            $columns['prioridad'] = __('Prioridad', parent::PLUGIN_SLUG);
+
+            return $columns;
+        }
+
+        public function custom_incidencias_column($column, $post_id)
+        {
+            switch ($column) {
+
+                case 'prioridad':
+                    $terms = get_the_terms($post_id, 'tipos_incidencia');
+                    foreach ($terms as $item) {
+                        $term_id = $item->term_id;
+                    }
+                    $priority = get_term_meta($term_id, 'sig_priority', true);
+                    echo 'Prioridad ' . $priority;
+                    break;
+
+                case 'sig_check_cierre':
+                    $cierre = get_post_meta($post_id, 'sig_check_cierre', true);
+                    if ($cierre == 'yes') {
+                ?>
+                        <span class="badge badge-danger"><?php _e('Pendiente', parent::PLUGIN_SLUG); ?></span>
+                    <?php
+                    } else {
+                    ?>
+                        <span class="badge badge-success"><?php _e('Finalizado', parent::PLUGIN_SLUG); ?></span>
+<?php
+                    }
                     break;
             }
         }
