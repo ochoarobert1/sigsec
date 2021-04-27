@@ -24,6 +24,7 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
         {
             add_action('cmb2_admin_init', array($this, 'register_custom_metabox_taxonomy'));
             add_action('cmb2_admin_init', array($this, 'register_custom_metabox_incidencias'));
+            add_action('cmb2_admin_init', array($this, 'register_custom_metabox_turnos'));
             add_action('cmb2_admin_init', array($this, 'register_custom_metabox_vehiculos'));
         }
 
@@ -83,6 +84,17 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
          */
         public function register_custom_metabox_incidencias()
         {
+            global $wpdb;
+
+            $current_turno = '';
+            $str = date('d') . '-' . date('m') . '-' . date('Y');
+            
+            $mypostids = $wpdb->get_col("select ID from $wpdb->posts where post_title LIKE '".$str."%' ");
+            foreach ($mypostids as $ids) {
+                $post_id = (int) $ids;
+            }
+            $current_turno = get_post_meta($post_id, 'sig_turno', true);
+            
             $cmb_incidencias_metabox = new_cmb2_box(array(
                 'id'            => self::PREFIX . 'incidencias_metabox',
                 'title'         => esc_html__('Información Principal', parent::PLUGIN_SLUG),
@@ -98,7 +110,10 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
                 'desc'       => esc_html__('Seleccione la Fecha de Inicio', parent::PLUGIN_SLUG),
                 'id'         => self::PREFIX . 'start_date',
                 'type' => 'text_date',
-                'date_format' => 'd-m-Y'
+                'date_format' => 'd-m-Y',
+                'attributes' => array(
+                    'required' => 'required',
+                ),
             ));
 
             $cmb_incidencias_metabox->add_field(array(
@@ -107,20 +122,25 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
                 'id'         => self::PREFIX . 'start_time',
                 'type' => 'text_time',
                 'attributes' => array(
+                    'required' => 'required',
                     'data-timepicker' => json_encode(array(
                         'timeOnlyTitle' => __('Escoger Hora y Minutos', parent::PLUGIN_SLUG),
                         'timeFormat' => 'HH:mm',
                         'stepMinute' => 1
                     )),
                 ),
-                'time_format' => 'h:i A'
+                'time_format' => 'h:i A',
             ));
 
             $cmb_incidencias_metabox->add_field(array(
                 'id'         => self::PREFIX . 'turno',
                 'name'       => esc_html__('Turno / Guardia', parent::PLUGIN_SLUG),
                 'desc'       => esc_html__('Escriba quienes estaban de guardia en el momento de la incidencia', parent::PLUGIN_SLUG),
-                'type'    => 'text_medium'
+                'type'    => 'text_medium',
+                'attributes' => array(
+                    'required' => 'required',
+                    'value' => $current_turno
+                )
             ));
 
             $cmb_incidencias_metabox->add_field(array(
@@ -184,8 +204,8 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
             $arr_query_vehiculos = new WP_Query(array('post_type' => 'vehiculos', 'posts_per_page' => -1));
             if ($arr_query_vehiculos->have_posts()) :
                 while ($arr_query_vehiculos->have_posts()) : $arr_query_vehiculos->the_post();
-                    $arr_vehiculos[get_the_ID()] = get_the_title();
-                endwhile;
+            $arr_vehiculos[get_the_ID()] = get_the_title();
+            endwhile;
             endif;
             wp_reset_query();
 
@@ -279,6 +299,33 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
                     'alta'     => __('Alta Prioridad', parent::PLUGIN_SLUG),
                     'critica'     => __('Prioridad Crítica', parent::PLUGIN_SLUG),
                 )
+            ));
+        }
+
+        public function register_custom_metabox_turnos()
+        {
+            $cmb_turnos_metabox = new_cmb2_box(array(
+                'id'            => self::PREFIX . 'turnos_metabox',
+                'title'         => esc_html__('Información Principal', parent::PLUGIN_SLUG),
+                'object_types'  => array('turnos'),
+                'context'       => 'normal',
+                'priority'      => 'high',
+                'classes'       => parent::PLUGIN_SLUG . '-cmb2-wrapper',
+                'cmb_styles'    => false
+            ));
+
+            $cmb_turnos_metabox->add_field(array(
+                'id'         => self::PREFIX . 'turno',
+                'name'       => esc_html__('Turno / Guardia', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Escriba los auxiliares de seguridad operativos para el dia', parent::PLUGIN_SLUG),
+                'type'    => 'text_medium'
+            ));
+
+            $cmb_turnos_metabox->add_field(array(
+                'id'         => self::PREFIX . 'datos_adicionales',
+                'name'       => esc_html__('Datos Adicionales', parent::PLUGIN_SLUG),
+                'desc'       => esc_html__('Ingrese data adicional (observaciones - numeros de telefonos - etc)', parent::PLUGIN_SLUG),
+                'type'    => 'textarea'
             ));
         }
     }
