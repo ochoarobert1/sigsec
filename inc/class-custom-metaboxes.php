@@ -87,7 +87,8 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
             global $wpdb;
 
             $current_turno = '';
-            $str = date('d') . '-' . date('m') . '-' . date('Y');
+            $date = new DateTime("now", new DateTimeZone('America/Caracas') );
+            $str = $date->format('d') . '-' . $date->format('m') . '-' . $date->format('Y');
             
             $mypostids = $wpdb->get_col("select ID from $wpdb->posts where post_title LIKE '".$str."%' ");
             foreach ($mypostids as $ids) {

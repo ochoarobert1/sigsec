@@ -66,7 +66,9 @@ if (!class_exists('Sigsec_Dashboard_Class')) :
     <div class="custom-main-welcome-item">
         <h2><?php _e('Fecha', parent::PLUGIN_SLUG); ?></h2>
         <div class="custom-item-value">
-            <?php echo date('d-m-Y'); ?>
+            <?php $date = new DateTime("now", new DateTimeZone('America/Caracas') ); ?>
+            <?php $str = $date->format('d') . '-' . $date->format('m') . '-' . $date->format('Y'); ?>
+            <?php echo $str; ?>
         </div>
     </div>
     <div class="custom-main-welcome-item">
@@ -100,13 +102,14 @@ if (!class_exists('Sigsec_Dashboard_Class')) :
 
         public function get_incidencias_today()
         {
-            $today = getdate();
+            $today_number = 0;
+            $date = new DateTime("now", new DateTimeZone('America/Caracas') );
 
             $arr_incidencias = new WP_Query(array('post_type' => 'incidencias', 'posts_per_page' => -1, 'date_query' => array(
                 array(
-                  'year'  => $today['year'],
-                  'month' => $today['mon'],
-                  'day'   => $today['mday'],
+                  'year'  => $date->format('Y'),
+                  'month' => $date->format('m'),
+                  'day'   => $date->format('d'),
                 ),
               )
             ));
@@ -120,6 +123,7 @@ if (!class_exists('Sigsec_Dashboard_Class')) :
 
         public function get_incidencias_active()
         {
+            $today_number = 0;
             $arr_incidencias2 = new WP_Query(array('post_type' => 'incidencias', 'posts_per_page' => -1, 'order' => 'DESC', 'orderby' => 'date', 'meta_query' => array(
                 array(
                     'key'     => 'sig_status',
@@ -141,7 +145,9 @@ if (!class_exists('Sigsec_Dashboard_Class')) :
             global $wpdb;
 
             $current_turno = '';
-            $str = date('d') . '-' . date('m') . '-' . date('Y');
+            $date = new DateTime("now", new DateTimeZone('America/Caracas') );
+
+            $str = $date->format('d') . '-' . $date->format('m') . '-' . $date->format('Y');
             
             $mypostids = $wpdb->get_col("select ID from $wpdb->posts where post_title LIKE '".$str."%' ");
             foreach ($mypostids as $ids) {
