@@ -144,6 +144,7 @@ if (!class_exists('Sigsec_Dashboard_Class')) :
         {
             global $wpdb;
 
+            $post_id = 0;
             $current_turno = '';
             $date = new DateTime("now", new DateTimeZone('America/Caracas') );
 

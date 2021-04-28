@@ -86,6 +86,7 @@ if (!class_exists('Sigsec_Metaboxes_Class')) :
         {
             global $wpdb;
 
+            $post_id = 0;
             $current_turno = '';
             $date = new DateTime("now", new DateTimeZone('America/Caracas') );
             $str = $date->format('d') . '-' . $date->format('m') . '-' . $date->format('Y');
